@@ -1,0 +1,32 @@
+
+<?php
+$servername = "localhost";
+$username = "bakers";
+$password = "R54636852M";
+
+$mysqli = mysqli_connect("localhost","bakers","R54636852M","bakers");
+if (!$mysqli){
+    echo "Connection failed";
+}else{
+
+    $stmt = "SELECT * FROM tbl_users";
+    //Check if the select query is correct
+    if (!$stmt){
+        echo "Error on the select query";
+    }else{
+
+         if($fetch = mysqli_query($mysqli,$stmt));
+
+        while ($x = mysqli_fetch_assoc($fetch)){
+            extract($x);
+
+            echo  $x['ID'];
+            echo  $x['FirstName'];
+            echo  $x['LastName'];
+            echo  $x['Email'];
+            echo  $x['PhoneNumber'];
+        }
+    }
+}
+?>
+

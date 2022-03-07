@@ -1,0 +1,70 @@
+<?php
+class Constant
+{
+    function __construct(){}
+
+    public static $REQUEST_GET_FUNCTION = "get";
+    public static $REQUEST_POST_FUNCTION = "post";
+    public static $REQUEST_GET_CATEGORY = "get_category";
+    public static $REQUEST_RESPONSE_SUCCESS = 1;
+    public static $REQUEST_RESPONSE_ERROR = 0;
+    public static $REQUEST_RESPONSE_ERROR_MESSAGE = "An error has occured";
+    public static $REQUEST_RESPONSE_NO_DATA_FOUND = "No Data Found";
+    public static $REQUEST_RESPONSE_SUCCESS_MESSAGE = "Success";
+
+
+
+}
+
+
+
+class Connection{
+
+    function __construct(){}
+    function  getConnection()
+    {
+        $servername = "localhost";
+        $username = "bakers";
+        $password = "R54636852M";
+        $database ="bakers";
+
+        // Create connection
+        $mysql = mysqli_connect($servername, $username, $password,$database);
+
+        // Check connection
+        if (mysqli_connect_errno()) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+
+     return $mysql;
+    }
+
+    function query()
+    {
+        global $jsonObject;
+
+        if ($jsonObject->action===Constant::$REQUEST_GET_CATEGORY)
+        {
+            return "SELECT id,title,image FROM tbl_category";
+//            return "call getAllCategory()";
+        }
+
+        return "";
+
+    }
+
+}
+
+
+
+
+class Functions
+{
+    function __construct(){}
+
+
+
+
+}
+
+

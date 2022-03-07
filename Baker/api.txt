@@ -1,0 +1,76 @@
+<?php
+
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET');
+
+include ('function.php');
+$connection = new Connection() ;
+$function= new Functions();
+
+
+$response = new Response();
+
+$mData= file_get_contents('php://input',true);
+
+
+if (!empty(json_decode($mData)))
+{
+
+    $mysql =$connection->getConnection();
+
+    $jsonObject= json_decode($mData,false);
+    $func= $jsonObject->functionality;
+    $action=$jsonObject->action;
+
+    if ($func===Constant::$REQUEST_GET_FUNCTION)
+    {;
+        $fetch = mysqli_query($mysql,'SELECT * FROM tbl_category');
+        if (mysqli_num_rows($fetch) > 0)
+        {
+            while ($row = mysqli_fetch_assoc($fetch)) {
+                $rowData[]= $row;
+            }
+
+            $response->code= Constant::$REQUEST_RESPONSE_SUCCESS;
+            $response->message=Constant::$REQUEST_RESPONSE_SUCCESS_MESSAGE;
+            $response->data=$rowData;
+            $response->action=$action;
+
+        }
+        else
+        {
+            $response->code= Constant::$REQUEST_RESPONSE_ERROR;
+            $response->message= $mysql->error; //Constant::$REQUEST_RESPONSE_NO_DATA_FOUND;
+            $response->data=array();
+            $response->action=$action;
+        }
+    }
+    elseif ($func===Constant::$REQUEST_POST_FUNCTION)
+    {
+
+    }
+
+}
+else
+{
+    $response->code= 404;
+    $response->message="No Data Received";
+    $response->data=array();
+    $response->action="";
+
+
+}
+$jsonData ["response"]=$response;
+
+echo json_encode($jsonData);
+
+class Response
+{
+    public  $action;
+    public $code;
+    public $message;
+    public $data=[];
+
+}
+
+?>
